@@ -1,38 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Honk&family=Protest+Revolution&display=swap');
 
-h1{
+/* body{
+    background-color: rgb(255, 245, 236);
+} */
+#head {
     text-align: center;
-    font-size: 50px;
+    font-size: 100px;
     font-weight: bold;
-    color: rgb(33, 32, 32);
-    font-family:Arial, Helvetica, sans-serif
-}
-.main{
-    text-align: center;
-}
-.box{
-    height: 100px;
-    width: 100px;
-    border: none;
-  
- box-sizing: border-box;
+    margin-bottom: 20px;
+    font-family: 'Honk', system-ui;
 
-  
 }
-.box:active{
-    outline: none;
-}
-.box:hover{
-    cursor: pointer;
-}
-.wrapper{
+
+.main {
+    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
 }
 
-.row{
+.box {
+    height: 100px;
+    width: 100px;
+    background-color: rgb(180, 246, 231);
+    border: none;
+
+    box-sizing: border-box;
+
+
+}
+
+.box:active {
+    outline: none;
+}
+
+.box:hover {
+    cursor: pointer;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row {
     display: flex;
 }
+
 /* #b1{
     background-image: url("crossed.png");
     background-size: 60px 60px;
@@ -40,12 +55,35 @@ h1{
     background-position: center;
 } */
 
-#b1{
-    
+
+#b1 {
+
     border-bottom: 1px solid grey;
     border-right: 1px solid grey;
 
+
 }
+
+.animate {
+    animation-name: example;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes example {
+
+    from {
+        background-size: 50px 50px;
+        background-color: yellow;
+    }
+
+    to {
+        background-size: 70px 70px;
+        background-color: yellow;
+    }
+
+}
+
 
 /* #b2{
 
@@ -54,63 +92,112 @@ h1{
     background-repeat: no-repeat;
     background-position: center;
 } */
-#b2{
+#b2 {
     border-bottom: 1px solid grey;
     border-left: 1px solid grey;
     border-right: 1px solid grey;
 }
-#b3{
+
+#b3 {
     border-bottom: 1px solid grey;
     border-left: 1px solid grey;
 }
-#b4{
-    border-top: 1px solid gray; 
-    border-bottom: 1px solid gray; 
-    border-right: 1px solid gray; 
-}
-#b5 { 
-    border: 1px solid gray; 
-} 
-  
-#b6 { 
-    border-top: 1px solid gray; 
-    border-bottom: 1px solid gray; 
-    border-left: 1px solid gray; 
-} 
-  
-#b7 { 
-    border-top: 1px solid gray; 
-    border-right: 1px solid gray; 
-} 
-  
-#b8 { 
-    border-top: 1px solid gray; 
-    border-right: 1px solid gray; 
-    border-left: 1px solid gray; 
-} 
-  
-#b9 { 
-    border-top: 1px solid gray; 
-    border-left: 1px solid gray; 
+
+#b4 {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
 }
 
-#chance{
-    font-size: 30px;
+#b5 {
+    border: 1px solid gray;
 }
-.chanceWrapper{
+
+#b6 {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+}
+
+#b7 {
+    border-top: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+#b8 {
+    border-top: 1px solid gray;
+    border-right: 1px solid gray;
+    border-left: 1px solid gray;
+}
+
+#b9 {
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+}
+
+#chance {
+    font-size: 30px;
+    font-family:'Courier New', Courier, monospace
+}
+
+.chanceWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 40px;
-}  
-#chanceImg{
+}
+
+#chanceImg {
     height: 40px;
     width: 40px;
-    background-image: url("crossed.png");
+    background-image: url("assets/crossed.png");
     background-size: 40px 40px;
     background-repeat: no-repeat;
     background-position: center;
     margin-left: 10px;
-    
 
+
+}
+
+
+#reset {
+
+    font-size: 20px;
+
+    width: 130px;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 5px;
+    background-color: rgb(9, 246, 210);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+#reset:hover {
+    background-color: aquamarine;
+    cursor: pointer;
+}
+
+
+#winWrapper {
+    display: flex;
+    margin-top: 30px;
+    display: none;
+    font-family: 'Protest Revolution', sans-serif;
+    font-weight: bold;
+    color: rgb(245, 157, 5);
+}
+
+#win {
+    font-size: 40px;
+}
+
+#winImg {
+    height: 50px;
+    width: 50px;
+    background-image: url("assets/crossed.png");
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 10px;
 }

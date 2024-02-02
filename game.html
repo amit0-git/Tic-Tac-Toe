@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
-    <script src="main.js"></script>
+    
 </head>
 <body>
     <div class="main">
-        <h1>Tic Tac Toe</h1>
+        <div id="head">Tic Tac Toe</div>
         <div class="wrapper">
             <div class="row">
                 <input type="text" name="" id="b1" class="box" readonly onclick="b1_box()">
@@ -32,9 +32,18 @@
             <div id="chance">Turn Of</div>
             <div id="chanceImg"></div>
         </div>
+
+        <div id="reset">New Game</div>
+
+        <div id="winWrapper">
+            <div id="win"></div>
+            <div id="winImg"></div>
+        </div>
+        
         
     </div>
     
-
+    <script src="main.js"></script>
+    <script src="main1.js"></script>
 </body>
 </html>
