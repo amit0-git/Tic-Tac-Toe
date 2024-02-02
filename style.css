@@ -3,6 +3,19 @@
 /* body{
     background-color: rgb(255, 245, 236);
 } */
+
+
+#speaker {
+    background-image: url("assets/musicOff.png");
+    height: 40px;
+    width: 40px;
+   
+    background-size: cover;
+    position: absolute;
+    right: 10px;
+
+}
+
 #head {
     text-align: center;
     font-size: 100px;
@@ -62,6 +75,20 @@
     border-right: 1px solid grey;
 
 
+}
+.shake{
+    animation: shake 1s ease-in-out infinite;
+}
+@keyframes shake {
+    0%, 100% {
+        transform: rotateY(0deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotateX(-20deg);
+    }
+    20%, 40%, 60%, 80% {
+        transform: rotateY(20deg);
+    }
 }
 
 .animate {
@@ -137,7 +164,7 @@
 
 #chance {
     font-size: 30px;
-    font-family:'Courier New', Courier, monospace
+    font-family: 'Courier New', Courier, monospace
 }
 
 .chanceWrapper {
@@ -200,4 +227,12 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-left: 10px;
+}
+#winImg span{
+    /* afterSpan.textContent = "wins";
+        afterSpan.style.fontSize = "40px";
+        afterSpan.style.marginLeft = "50px"; */
+
+    font-size:40px;
+    margin-left:50px;
 }

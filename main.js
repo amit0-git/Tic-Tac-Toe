@@ -1,5 +1,11 @@
+//audio files load
 var audio1=new Audio("assets/mixkit-confirmation-tone-2867.wav")
 var audio2=new Audio("assets/mixkit-cooking-stopwatch-alert-1792.wav")
+var newGame=new Audio("assets/newGame.wav")
+var gameDraw=new Audio("assets/gameDraw.wav")
+var gameWin=new Audio("assets/win.wav");
+var bgMusic=new Audio("assets/background.mp3")
+
 
 
 var winArray=[]
@@ -34,12 +40,41 @@ Array.from(row).forEach((element)=>{
 
 var chance = "x"
 var nthTurn = 0;
+var music=0;
 
 var cross = "url(assets/crossed.png)";
 var zero = "url(assets/zero.png)";
 
 //game draw assets
 var ops1 = "url(assets/oops.png)";
+
+//speaker on offf
+var musicOn="url(assets/music.png)";
+var musicOff="url(assets/musicOff.png)"
+
+var musicBox=document.getElementById("speaker");
+musicBox.addEventListener("click",changeMusic);
+
+function changeMusic(){
+    var music1=document.getElementById("speaker");
+    if (music==0){
+        bgMusic.currentSrc=0;
+        bgMusic.loop=true;
+        bgMusic.play();
+        music1.style.backgroundImage=musicOn;
+        music=1;
+    }
+
+    else{
+        bgMusic.currentSrc=0;
+        bgMusic.pause();
+        music1.style.backgroundImage=musicOff;
+        music=0;
+    }
+    console.log("Music clicked")
+   
+}
+
 
 function initializeMatrix() {
     //function to initialize the matrix with null
@@ -62,7 +97,7 @@ function initializeMatrix() {
 }
 //hide chance wrapper after winning or draw
 function hideChance(){
-    console.log("Hide Chance called!!")
+    
     var chance=document.getElementsByClassName("chanceWrapper");
     chance[0].style.visibility="hidden";
 }
@@ -175,6 +210,7 @@ function checkGameWinner(row, col) {
     }
 
     //only check in the diagonals when the input is made on the diagonal section
+
     //check for left diagonal
     winArray=[]
     winX = 1
@@ -257,12 +293,18 @@ var rs = document.getElementById("reset");
 rs.addEventListener("click", reset);
 
 function reset() {
+    newGame.currentTime = 0;
+    newGame.play();
 
     //funtion to reset the game
+    winArray=[]
     game = initializeMatrix(); //initialize the matrix with null
     nthTurn = 0;
     console.log("Reset button called!")
-    location.reload();
+    window.setTimeout(()=>{
+        location.reload();
+    },500)
+    
 }
 
 
@@ -283,7 +325,8 @@ function updateWinPattern(array1){
 
 
 function updateWinStatus(player) {
-    updateWinPattern(winArray);
+
+    
     console.log("Win array",winArray)
     
     //disable the game box for further moves after the game win or draw
@@ -298,43 +341,45 @@ function updateWinStatus(player) {
     wrapper.style.display = "flex";
     var winImg = document.getElementById("winImg");
 
-    winImg.style.backgroundSize = "40px 40px";
-    winImg.style.backgroundPosition = "center";
-    winImg.style.backgroundRepeat = "no-repeat";
-    winImg.style.marginLeft = "10px";
-    winImg.style.height = "50px";
-    winImg.style.width = "50px";
+   
 
     if (player == 1) {
+        updateWinPattern(winArray);
+        gameWin.currentSrc=0;
+        gameWin.play();
         win.innerHTML = "Congratulations!!";
-        var afterSpan = document.createElement("span");
-        afterSpan.textContent = "wins";
-        afterSpan.style.fontSize = "40px";
-        afterSpan.style.marginLeft = "50px";
+
+        // var afterSpan = document.createElement("span");
+        // afterSpan.textContent = "wins";
+        // afterSpan.style.fontSize = "40px";
+        // afterSpan.style.marginLeft = "50px";
 
 
         winImg.style.backgroundImage = cross;
-        winImg.appendChild(afterSpan);
+        // winImg.appendChild(afterSpan);
 
 
 
     }
 
     if (player == 0) {
+        updateWinPattern(winArray);
+        gameWin.currentSrc=0;
+        gameWin.play();
         win.innerHTML = "Congratulations!!";
         winImg.style.backgroundImage = zero;
 
-        var afterSpan = document.createElement("span");
-        afterSpan.textContent = "wins";
-        afterSpan.style.fontSize = "40px";
-        afterSpan.style.marginLeft = "50px";
-
-        winImg.appendChild(afterSpan);
+        
 
     }
     if (player == 2) {
+        var sp=document.getElementById("sp");
+        gameDraw.currentSrc=0;
+        gameDraw.play();
+        sp.innerHTML=""
         win.innerHTML = "Ooops!! Game Draw";
         winImg.style.backgroundImage = ops1;
+        winImg.classList.add("shake");
     }
 }
 
@@ -344,7 +389,7 @@ function updateChanceImg() {
     let box1 = document.getElementById("chanceImg");
 
     box1.style.backgroundRepeat = "no-repeat";
-    box1.style.backgroundSize = "40px 40px";
+    // box1.style.backgroundSize = "40px 40px";
     box1.style.backgroundPosition = "center";
     box1.style.marginLeft = "10px";
 
