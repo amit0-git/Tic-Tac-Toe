@@ -1,46 +1,48 @@
+window.onload = function () {
+    ///display the before the page load
+
+    var load = document.getElementById("loader");
+    var main = document.getElementById("main");
+
+    // Hide loader and show main content after the entire page has loaded
+    load.style.display = "none";
+    main.style.display = "flex";
+    console.log('JavaScript has completely loaded.');
+  };
+
 //audio files load
-var audio1=new Audio("assets/mixkit-page-back-chime-1108.wav")
-var audio2=new Audio("assets/mixkit-cooking-stopwatch-alert-1792.wav")
-var newGame=new Audio("assets/newGame.wav")
-var gameDraw=new Audio("assets/gameDraw.wav")
-var gameWin=new Audio("assets/win.wav");
-var bgMusic=new Audio("assets/background.mp3")
+var audio1 = new Audio("assets/mixkit-page-back-chime-1108.wav")
+var audio2 = new Audio("assets/mixkit-cooking-stopwatch-alert-1792.wav")
+var newGame = new Audio("assets/newGame.wav")
+var gameDraw = new Audio("assets/gameDraw.wav")
+var gameWin = new Audio("assets/win.wav");
+var bgMusic = new Audio("assets/background.mp3")
 
 
 
-var winArray=[]
+var winArray = []
+var movesArray = []
 
-var row=document.getElementsByClassName("row");
-Array.from(row).forEach((element)=>{
-    element.addEventListener("click",()=>{
+var row = document.getElementsByClassName("row");
+Array.from(row).forEach((element) => {
+    element.addEventListener("click", () => {
 
 
-        if (chance=="x"){
+        if (chance == "x") {
             audio2.currentTime = 0;
             audio2.play();
         }
-        else{
+        else {
             audio1.currentTime = 0;
             audio1.play();
         }
-        
-        // if (audio1.paused) {
-    
-        //     // If paused, play the audio
-        //     audio1.play();
-            
-        // } else {
-        //     // If playing, pause the audio
-        //     audio1.pause();
-        //     audio1.currentTime = 0; // Reset the audio to the beginning
-            
-        // }
+
     })
 })
 
 var chance = "x"
 var nthTurn = 0;
-var music=0;
+var music = 0;
 
 var cross = "url(assets/crossed.png)";
 var zero = "url(assets/zero.png)";
@@ -49,34 +51,34 @@ var zero = "url(assets/zero.png)";
 var ops1 = "url(assets/oops.png)";
 
 //speaker on offf
-var musicOn="url(assets/music.png)";
-var musicOff="url(assets/musicOff.png)"
+var musicOn = "url(assets/music.png)";
+var musicOff = "url(assets/musicOff.png)"
 
 //replay image
-var replay="url(assets/replay.png)"
+var replay = "url(assets/replay.png)"
 
-var musicBox=document.getElementById("speaker");
-musicBox.addEventListener("click",changeMusic);
+var musicBox = document.getElementById("speaker");
+musicBox.addEventListener("click", changeMusic);
 
-function changeMusic(){
-    var music1=document.getElementById("speaker");
-    if (music==0){
-        bgMusic.currentSrc=0;
-        
+function changeMusic() {
+    var music1 = document.getElementById("speaker");
+    if (music == 0) {
+        bgMusic.currentSrc = 0;
+
         bgMusic.play();
-        bgMusic.loop=true;
-        music1.style.backgroundImage=musicOn;
-        music=1;
+        bgMusic.loop = true;
+        music1.style.backgroundImage = musicOn;
+        music = 1;
     }
 
-    else{
-        
+    else {
+
         bgMusic.pause();
-        music1.style.backgroundImage=musicOff;
-        music=0;
+        music1.style.backgroundImage = musicOff;
+        music = 0;
     }
     console.log("Music clicked")
-   
+
 }
 
 
@@ -100,24 +102,130 @@ function initializeMatrix() {
 
 }
 
-function replayFunction(){
+
+
+//function to update game moves
+function replayFunction(row, col, chance) {
+
     console.log("replay fn clicked")
+
+    var num = mapToNumber(row, col);
+    var tmp = [num, chance];
+    //push in the moves array
+    movesArray.push(tmp);
+
 }
+
+
+
+function addBgAndAnimate(box){
+    for (var i = 0; i < winArray.length; i++) {
+        box[winArray[i]].style.backgroundColor = "yellow";
+        box[winArray[i]].classList.add("animate");
+
+    }
+   
+    
+}
+ function addImageWithDelay(index,box) {
+
+    setTimeout(function () {
+      if (movesArray[index][1] === "x") {
+     
+        box[movesArray[index][0]].style.backgroundImage = zero;
+      } else if (movesArray[index][1] === "o") {
+       
+    
+        box[movesArray[index][0]].style.backgroundImage = cross;
+      }
+    }, index * 1000); // 1-second delay for each iteration
+  }
+
+
+//function to replpay the game
+
+ function playReplay(movesArray) {
+    console.log("play replay called")
+    console.log(winArray)
+
+    var box = document.getElementsByClassName("box");
+    var box = Array.from(box)
+    console.log(box)
+
+    //remove the boxex
+
+    for (var i = 0; i < box.length; i++) {
+        box[i].classList.remove('animate');
+        box[i].style.backgroundImage = "none";
+
+    }
+
+    //start filling the boxes
+//start filling the 
+
+    setTimeout(()=>{
+
+        for (var i = 0; i < movesArray.length; i++) {
+
+
+
+        
+            addImageWithDelay(i,box);
+           
+    
+    
+    
+    
+        }
+    },1000);
+    
+    //add the animatin and bg
+    addBgAndAnimate(box);
+
+    
+   
+
+    
+
+}
+
+function playReplay1() {
+   
+    //support fn for play replay
+    playReplay(movesArray);
+}
+
+
+
+
 //hide chance wrapper after winning or draw
-function hideChance(){
-    
-    // var chance=document.getElementsByClassName("chanceWrapper");
-    // chance[0].style.visibility="hidden";
+function hideChance() {
 
-    var chance=document.getElementById("chance");
-    var chanceImg=document.getElementById("chanceImg")
+    var chance=document.getElementsByClassName("chanceWrapper");
+    chance[0].style.visibility="hidden";
 
-    
+    // var chance = document.getElementById("chance");
+    // var chanceImg = document.getElementById("chanceImg")
 
-    chance.innerHTML="";
-    chanceImg.style.backgroundImage=replay;
-    chanceImg.addEventListener("click",replayFunction)
 
+
+    // chance.innerHTML = "";
+    // chanceImg.style.backgroundImage = replay;
+    // chanceImg.addEventListener("click", playReplay1);
+
+}
+
+//display replay button
+
+function displayReplay(){
+    var chance = document.getElementById("chance");
+    var chanceImg = document.getElementById("chanceImg")
+
+
+
+    chance.innerHTML = "";
+    chanceImg.style.backgroundImage = replay;
+    chanceImg.addEventListener("click", playReplay1);
 }
 
 
@@ -144,10 +252,10 @@ function print() {
     console.log(game);
 }
 
-function mapToNumber(row,col){
+function mapToNumber(row, col) {
     //function to map 2d matrix cordinate to 1d array cordinate
 
-    var num=row*3+col;
+    var num = row * 3 + col;
     return num;
 }
 
@@ -165,7 +273,7 @@ function checkGameWinner(row, col) {
     //check only in the current row ,col and diagonal
     var winX = 1
     var winO = 1
-    winArray=[]
+    winArray = []
 
     //check for row 
     for (var i = 0; i < 3; i++) {
@@ -179,7 +287,7 @@ function checkGameWinner(row, col) {
 
         }
 
-        winArray.push(mapToNumber(row,i));
+        winArray.push(mapToNumber(row, i));
 
     }
 
@@ -198,7 +306,7 @@ function checkGameWinner(row, col) {
 
 
     //check for column
-    winArray=[]
+    winArray = []
     winX = 1
     winO = 1
 
@@ -212,7 +320,7 @@ function checkGameWinner(row, col) {
             winO = 0;
 
         }
-        winArray.push(mapToNumber(i,col));
+        winArray.push(mapToNumber(i, col));
     }
 
     //return the winner if the match is found in the column
@@ -230,7 +338,7 @@ function checkGameWinner(row, col) {
     //only check in the diagonals when the input is made on the diagonal section
 
     //check for left diagonal
-    winArray=[]
+    winArray = []
     winX = 1
     winO = 1
 
@@ -244,7 +352,7 @@ function checkGameWinner(row, col) {
             if (game[i][i] != 0) {
                 winO = 0
             }
-            winArray.push(mapToNumber(i,i));
+            winArray.push(mapToNumber(i, i));
         }
         //return the winner if the match is found in the left diagonal
         //else check for the column
@@ -263,7 +371,7 @@ function checkGameWinner(row, col) {
 
 
     //check for right diagonal
-    winArray=[]
+    winArray = []
     winX = 1
     winO = 1
 
@@ -277,7 +385,7 @@ function checkGameWinner(row, col) {
             if (game[i][2 - i] != 0) {
                 winO = 0
             }
-            winArray.push(mapToNumber(i,2-i));
+            winArray.push(mapToNumber(i, 2 - i));
 
         }
         //return the winner if the match is found in the right diagonal
@@ -296,7 +404,7 @@ function checkGameWinner(row, col) {
     //check for the draw condition
     if (nthTurn == 8) {
         updateWinStatus(2);
-        
+
         return "Game Draw!!"
     }
 
@@ -315,55 +423,61 @@ function reset() {
     newGame.play();
 
     //funtion to reset the game
-    winArray=[]
+    movesArray = []
+    winArray = []
     game = initializeMatrix(); //initialize the matrix with null
     nthTurn = 0;
     console.log("Reset button called!")
-    window.setTimeout(()=>{
+    window.setTimeout(() => {
         location.reload();
-    },500)
-    
+    }, 500)
+
 }
 
 
-function updateWinPattern(array1){
+function animateWinPattern(array1) {
+    //fn to animate the win pattern
+    var box = document.getElementsByClassName("box");
+    var boxArray = Array.from(box);
 
-    var box=document.getElementsByClassName("box");
-    var boxArray=Array.from(box);
 
-
-    for (var i=0;i<array1.length;i++){
+    for (var i = 0; i < array1.length; i++) {
         boxArray[array1[i]].classList.add("animate");
-       console.log(boxArray[array1[i]])
+        
     }
 
-    
+
 
 }
 
 
 function updateWinStatus(player) {
 
-    
-    console.log("Win array",winArray)
-    
+
+    console.log("Win array", winArray)
+    console.log("moves", movesArray)
+
     //disable the game box for further moves after the game win or draw
+
     disableAfterWin();
 
 
-    //hide the chance wrapper after win or draw
-    hideChance();
+
 
     var wrapper = document.getElementById("winWrapper");
     var win = document.getElementById("win");
     wrapper.style.display = "flex";
     var winImg = document.getElementById("winImg");
 
-   
+
 
     if (player == 1) {
-        updateWinPattern(winArray);
-        gameWin.currentSrc=0;
+        //display the replay button 
+
+        displayReplay();
+        //update the win pattern by changing the background color
+        animateWinPattern(winArray);
+        gameWin.currentSrc = 0;
         gameWin.play();
         win.innerHTML = "Congratulations!!";
 
@@ -381,20 +495,25 @@ function updateWinStatus(player) {
     }
 
     if (player == 0) {
-        updateWinPattern(winArray);
-        gameWin.currentSrc=0;
+        //display the replay button
+        displayReplay();
+
+        animateWinPattern(winArray);
+        gameWin.currentSrc = 0;
         gameWin.play();
         win.innerHTML = "Congratulations!!";
         winImg.style.backgroundImage = zero;
 
-        
+
 
     }
     if (player == 2) {
-        var sp=document.getElementById("sp");
-        gameDraw.currentSrc=0;
+            //hide the chance wrapper after win or draw
+    hideChance();
+        var sp = document.getElementById("sp");
+        gameDraw.currentSrc = 0;
         gameDraw.play();
-        sp.innerHTML=""
+        sp.innerHTML = ""
         win.innerHTML = "Ooops!! Game Draw";
         winImg.style.backgroundImage = ops1;
         winImg.classList.add("shake");
@@ -431,6 +550,7 @@ function b1_box() {
     box.style.backgroundRepeat = "no-repeat";
     box.style.backgroundSize = "60px 60px";
     box.style.backgroundPosition = "center";
+
     if (chance == "x") {
 
         box.style.backgroundImage = cross;
@@ -448,6 +568,9 @@ function b1_box() {
     box.disabled = true;
 
     updateChanceImg();
+
+    replayFunction(0, 0, chance);
+
     console.log(checkGameWinner(0, 0));
 
     //update turn variable
@@ -477,6 +600,7 @@ function b2_box() {
     }
     box.disabled = true;
     updateChanceImg();
+    replayFunction(0, 1, chance);
     console.log(checkGameWinner(0, 1));
 
     //update turn variable
@@ -505,6 +629,7 @@ function b3_box() {
     }
     box.disabled = true;
     updateChanceImg();
+    replayFunction(0, 2, chance);
     console.log(checkGameWinner(0, 2));
 
     //update turn variable
@@ -533,6 +658,7 @@ function b4_box() {
 
     box.disabled = true;
     updateChanceImg();
+    replayFunction(1, 0, chance);
     console.log(checkGameWinner(1, 0));
 
 
@@ -562,6 +688,7 @@ function b5_box() {
 
     box.disabled = true;
     updateChanceImg();
+    replayFunction(1, 1, chance);
     console.log(checkGameWinner(1, 1));
 
     //update turn variable
@@ -590,6 +717,7 @@ function b6_box() {
 
     box.disabled = true;
     updateChanceImg();
+    replayFunction(1, 2, chance);
     console.log(checkGameWinner(1, 2));
 
     //update turn variable
@@ -618,6 +746,7 @@ function b7_box() {
 
     box.disabled = true;
     updateChanceImg();
+    replayFunction(2, 0, chance);
     console.log(checkGameWinner(2, 0));
 
     //update turn variable
@@ -646,6 +775,7 @@ function b8_box() {
 
     box.disabled = true;
     updateChanceImg();
+    replayFunction(2, 1, chance);
     checkGameWinner(2, 1);
 
 
@@ -673,7 +803,7 @@ function b9_box() {
     }
     box.disabled = true;
     updateChanceImg();
-
+    replayFunction(2, 2, chance);
     checkGameWinner(2, 2);
 
     //update turn variable

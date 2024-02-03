@@ -5,6 +5,26 @@
 } */
 
 
+
+#loader {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #loader img {
+    height: 200px;
+  }
+
+  #main {
+    display: none;
+  }
+
+
+
+
+
 #speaker {
     background-image: url("assets/musicOff.png");
     height: 40px;
