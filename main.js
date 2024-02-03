@@ -1,5 +1,5 @@
 //audio files load
-var audio1=new Audio("assets/mixkit-confirmation-tone-2867.wav")
+var audio1=new Audio("assets/mixkit-page-back-chime-1108.wav")
 var audio2=new Audio("assets/mixkit-cooking-stopwatch-alert-1792.wav")
 var newGame=new Audio("assets/newGame.wav")
 var gameDraw=new Audio("assets/gameDraw.wav")
@@ -52,6 +52,9 @@ var ops1 = "url(assets/oops.png)";
 var musicOn="url(assets/music.png)";
 var musicOff="url(assets/musicOff.png)"
 
+//replay image
+var replay="url(assets/replay.png)"
+
 var musicBox=document.getElementById("speaker");
 musicBox.addEventListener("click",changeMusic);
 
@@ -59,14 +62,15 @@ function changeMusic(){
     var music1=document.getElementById("speaker");
     if (music==0){
         bgMusic.currentSrc=0;
-        bgMusic.loop=true;
+        
         bgMusic.play();
+        bgMusic.loop=true;
         music1.style.backgroundImage=musicOn;
         music=1;
     }
 
     else{
-        bgMusic.currentSrc=0;
+        
         bgMusic.pause();
         music1.style.backgroundImage=musicOff;
         music=0;
@@ -95,11 +99,25 @@ function initializeMatrix() {
 
 
 }
+
+function replayFunction(){
+    console.log("replay fn clicked")
+}
 //hide chance wrapper after winning or draw
 function hideChance(){
     
-    var chance=document.getElementsByClassName("chanceWrapper");
-    chance[0].style.visibility="hidden";
+    // var chance=document.getElementsByClassName("chanceWrapper");
+    // chance[0].style.visibility="hidden";
+
+    var chance=document.getElementById("chance");
+    var chanceImg=document.getElementById("chanceImg")
+
+    
+
+    chance.innerHTML="";
+    chanceImg.style.backgroundImage=replay;
+    chanceImg.addEventListener("click",replayFunction)
+
 }
 
 
