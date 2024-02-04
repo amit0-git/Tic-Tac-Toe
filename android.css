@@ -4,18 +4,27 @@
     body {
         background-color: rgb(252, 249, 247);
     }
-
+    #linkedin{
+       
+        height: 30px;
+        width: 30px;
+    
+     
+    }
     #speaker {
-        background-image: url("assets/musicOff.png");
+  
         height: 30px;
         width: 30px;
 
-        background-size: cover;
-        position: absolute;
-        right: 10px;
-
+     
     }
-
+    #github{
+        
+        height: 30px;
+        width: 30px;
+    
+        
+    }
     #head {
         text-align: center;
         font-size: 80px;
