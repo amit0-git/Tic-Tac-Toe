@@ -2,7 +2,9 @@
 
 
 
-
+body {
+    background-color: rgb(255, 249, 240);
+}
 
 #loader {
     height: 100vh;
@@ -296,4 +298,11 @@
 
     font-size: 40px;
     margin-left: 50px;
+}
+
+#developer{
+    position: absolute;
+    bottom: 10px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: grey;
 }

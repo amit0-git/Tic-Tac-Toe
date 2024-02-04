@@ -8,7 +8,7 @@ window.onload = function () {
     load.style.display = "none";
     main.style.display = "flex";
     console.log('JavaScript has completely loaded.');
-  };
+};
 
 //audio files load
 var audio1 = new Audio("assets/mixkit-page-back-chime-1108.wav")
@@ -80,8 +80,6 @@ function changeMusic() {
     console.log("Music clicked")
 
 }
-
-
 function initializeMatrix() {
     //function to initialize the matrix with null
     var matrix = []
@@ -92,59 +90,46 @@ function initializeMatrix() {
             row.push(null);
         }
         matrix.push(row);
-
-
-
     }
-
     return matrix;
-
-
 }
-
-
 
 //function to update game moves
 function replayFunction(row, col, chance) {
-
     console.log("replay fn clicked")
-
     var num = mapToNumber(row, col);
     var tmp = [num, chance];
     //push in the moves array
     movesArray.push(tmp);
-
 }
 
-
-
-function addBgAndAnimate(box){
+function addBgAndAnimate(box) {
     for (var i = 0; i < winArray.length; i++) {
         box[winArray[i]].style.backgroundColor = "yellow";
         box[winArray[i]].classList.add("animate");
 
     }
-   
-    
+
+
 }
- function addImageWithDelay(index,box) {
+function addImageWithDelay(index, box) {
 
     setTimeout(function () {
-      if (movesArray[index][1] === "x") {
-     
-        box[movesArray[index][0]].style.backgroundImage = zero;
-      } else if (movesArray[index][1] === "o") {
-       
-    
-        box[movesArray[index][0]].style.backgroundImage = cross;
-      }
+        if (movesArray[index][1] === "x") {
+
+            box[movesArray[index][0]].style.backgroundImage = zero;
+        } else if (movesArray[index][1] === "o") {
+
+
+            box[movesArray[index][0]].style.backgroundImage = cross;
+        }
     }, index * 1000); // 1-second delay for each iteration
-  }
+}
 
 
 //function to replpay the game
 
- function playReplay(movesArray) {
+function playReplay(movesArray) {
     console.log("play replay called")
     console.log(winArray)
 
@@ -161,36 +146,36 @@ function addBgAndAnimate(box){
     }
 
     //start filling the boxes
-//start filling the 
+    //start filling the 
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
         for (var i = 0; i < movesArray.length; i++) {
 
 
 
-        
-            addImageWithDelay(i,box);
-           
-    
-    
-    
-    
+
+            addImageWithDelay(i, box);
+
+
+
+
+
         }
-    },1000);
-    
+    }, 1000);
+
     //add the animatin and bg
     addBgAndAnimate(box);
 
-    
-   
 
-    
+
+
+
 
 }
 
 function playReplay1() {
-   
+
     //support fn for play replay
     playReplay(movesArray);
 }
@@ -201,8 +186,8 @@ function playReplay1() {
 //hide chance wrapper after winning or draw
 function hideChance() {
 
-    var chance=document.getElementsByClassName("chanceWrapper");
-    chance[0].style.visibility="hidden";
+    var chance = document.getElementsByClassName("chanceWrapper");
+    chance[0].style.visibility = "hidden";
 
     // var chance = document.getElementById("chance");
     // var chanceImg = document.getElementById("chanceImg")
@@ -217,7 +202,7 @@ function hideChance() {
 
 //display replay button
 
-function displayReplay(){
+function displayReplay() {
     var chance = document.getElementById("chance");
     var chanceImg = document.getElementById("chanceImg")
 
@@ -235,7 +220,7 @@ function disableAfterWin() {
     var row = document.getElementsByClassName("box");
 
     Array.from(row).forEach((element) => {
-        console.log("asas", element);
+        
         element.disabled = true;
     });
 
@@ -428,7 +413,7 @@ function reset() {
     game = initializeMatrix(); //initialize the matrix with null
     nthTurn = 0;
     console.log("Reset button called!")
-    
+
     window.setTimeout(() => {
         location.reload();
     }, 500)
@@ -444,7 +429,7 @@ function animateWinPattern(array1) {
 
     for (var i = 0; i < array1.length; i++) {
         boxArray[array1[i]].classList.add("animate");
-        
+
     }
 
 
@@ -455,8 +440,8 @@ function animateWinPattern(array1) {
 function updateWinStatus(player) {
 
 
-    console.log("Win array", winArray)
-    console.log("moves", movesArray)
+    // console.log("Win array", winArray)
+    // console.log("moves", movesArray)
 
     //disable the game box for further moves after the game win or draw
 
@@ -509,8 +494,8 @@ function updateWinStatus(player) {
 
     }
     if (player == 2) {
-            //hide the chance wrapper after win or draw
-    hideChance();
+        //hide the chance wrapper after win or draw
+        hideChance();
         var sp = document.getElementById("sp");
         gameDraw.currentSrc = 0;
         gameDraw.play();

@@ -2,7 +2,7 @@
 
 
     body {
-        background-color: rgb(252, 249, 247);
+        background-color: rgb(255, 245, 238);
     }
     #linkedin{
        
@@ -54,10 +54,10 @@
 
     #winImg {
         font-size: 25px;
-        height: 40px;
-        width: 40px;
+        height: 35px;
+        width: 35px;
         background-image: url("assets/crossed.png");
-        background-size: 40px 40px;
+        background-size: 30px 30px;
         background-repeat: no-repeat;
         background-position: center;
         margin-left: 10px;
@@ -73,7 +73,7 @@
 
 
     #chance {
-        font-size: 25px;
+        font-size: 20px;
         font-weight: bold;
         color: grey;
         font-family: 'Courier New', Courier, monospace
@@ -83,14 +83,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 30px;
+        margin-top: 20px;
     }
 
     #chanceImg {
         height: 30px;
         width: 30px;
         background-image: url("assets/crossed.png");
-        background-size: 30px 30px;
+        background-size: 25px 25px;
         background-repeat: no-repeat;
         background-position: center;
         margin-left: 10px;
@@ -102,5 +102,15 @@
         color: white;
         background-color: rgb(75, 226, 19);
         font-weight: bold;
+
+
+
+        font-size: 17px;
+
+        width: 125px;
+     
+        margin-top: 10px;
+        padding: 5px;
+  
     }
 }
