@@ -428,6 +428,7 @@ function reset() {
     game = initializeMatrix(); //initialize the matrix with null
     nthTurn = 0;
     console.log("Reset button called!")
+    
     window.setTimeout(() => {
         location.reload();
     }, 500)

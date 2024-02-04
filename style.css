@@ -90,6 +90,7 @@
 
 .box:hover {
     cursor: pointer;
+    background-color: rgb(198, 251, 92);
 }
 
 .wrapper {
