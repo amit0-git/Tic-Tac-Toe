@@ -2,20 +2,32 @@ const express = require("express")
 const http = require("http")
 const socketIO = require("socket.io")
 const cors = require("cors")
-
+const path = require('path'); 
 const app = express()
-app.use(cors({ origin: 'http://localhost:5173' }));
+
 
 const server = http.createServer(app)
 
 // Set up Socket.IO with CORS options
-const io = socketIO(server, {
-    cors: {
-        origin: 'http://localhost:5173', // Allow only this origin
-        methods: ['GET', 'POST'], // Allow specific methods
-        allowedHeaders: ['Content-Type'], // Allow specific headers
-    },
+const io = socketIO(server);
+
+
+
+// Serve static files from the React app (client/build folder)
+app.use(express.static(path.join(__dirname, '..', 'Client', 'dist'))); // Adjust path to the `client/build` folder
+
+// Basic route (optional, just to verify the server is working)
+app.get('/', (req, res) => {
+  res.send('Welcome to the Tic Tac Toe Game Server');
 });
+
+// Serve index.html file for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'dist', 'index.html')); // Adjust path to the `client/build` folder
+});
+
+
+
 
 // Store active game rooms
 const rooms = {};
