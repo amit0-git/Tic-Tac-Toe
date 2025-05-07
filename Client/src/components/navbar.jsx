@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-function navbar() {
+function Navbar() {
   return (
-    <h1>Tic Tac Toe</h1>
-  )
+    <div className="navbar">
+      <h1>Tic Tac Toe</h1>
+    </div>
+  );
 }
 
-export default navbar
+export default Navbar;
