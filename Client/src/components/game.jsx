@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
-
+import soundEffects from '../utils/sound';
 
 let socket = null;
 
 const Game = ({ mode, onResetGame }) => {
 
-    
+
     const [roomId, setRoomId] = useState('');
     const [roomInput, setRoomInput] = useState('');
     const [playerName, setPlayerName] = useState('');
@@ -53,6 +53,7 @@ const Game = ({ mode, onResetGame }) => {
             });
 
             socket.on('gameStart', (id, newBoard, currentTurn, opponent) => {
+                soundEffects.playNew();
                 setRoomId(id);
                 setBoard(newBoard);
                 setCurrentPlayer(currentTurn);
@@ -80,11 +81,13 @@ const Game = ({ mode, onResetGame }) => {
                 setStatusMessage(winningPlayer === playerSymbol ?
                     `You won, ${playerName}!` :
                     `${opponentName} won!`);
+                soundEffects.playWin();
             });
 
             socket.on('gameDraw', () => {
                 setGameStatus('draw');
                 setStatusMessage('Game ended in a draw!');
+                soundEffects.playDraw();
             });
 
             socket.on('opponentLeft', () => {
@@ -236,6 +239,7 @@ const Game = ({ mode, onResetGame }) => {
 
             // Send move to server
             socket.emit('makeMove', roomId, index);
+            soundEffects.playClick();
         } else {
             // Solo mode
             const newBoard = [...board];

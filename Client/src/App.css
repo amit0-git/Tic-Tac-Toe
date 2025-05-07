@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&family=Protest+Revolution&display=swap');
+
+:root {
+  --primary: #4D3DF7;
+  --primary-dark: #3B2ED8;
+  --secondary: #FF5470;
+  --secondary-dark: #FF2954;
+  --tertiary: #00D5C0;
+  --tertiary-dark: #00BCA9;
+  --neutral: #343a40;
+  --neutral-light: #f8f9fa;
+  --x-color: #FF5470;
+  --o-color: #4D3DF7;
+  --winner-color: #00D5C0;
+  --draw-color: #FF9F1C;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,95 +23,151 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(145deg, #f3f4ff 0%, #e8f5ff 100%);
+  color: var(--neutral);
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 .App {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 80vh;
+  
+  min-height: calc(100vh - 70px);
   padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
+/* Button Styles */
 button {
-  background-color: #4CAF50;
+  background-color: var(--primary);
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 12px 25px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  font-weight: 600;
   margin: 10px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(77, 61, 247, 0.15);
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(77, 61, 247, 0.25);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(77, 61, 247, 0.15);
 }
 
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
+/* Game Selection Styles */
 .game-select {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
 }
 
 .game-select h2 {
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 25px;
+  color: var(--neutral);
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .game-select button {
-  width: 200px;
+  width: 220px;
   margin: 10px;
+  font-size: 18px;
+}
+
+.game-select button:first-of-type {
+  background-color: var(--secondary);
+  box-shadow: 0 4px 12px rgba(255, 84, 112, 0.15);
+}
+
+.game-select button:first-of-type:hover {
+  background-color: var(--secondary-dark);
+  box-shadow: 0 6px 16px rgba(255, 84, 112, 0.25);
+}
+
+/* Game Board Styles */
+.game {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  width: 300px;
-  margin: 20px auto;
+  grid-gap: 12px;
+  width: 100%;
+  max-width: 350px;
+  margin: 10px auto;
+  aspect-ratio: 1/1;
 }
 
 .cell {
   background-color: #fff;
-  border: 2px solid #ddd;
-  height: 100px;
+  border: none;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
+  font-size: 46px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  aspect-ratio: 1/1;
+  margin: 0;
+  padding: 0;
 }
 
 .cell:hover {
-  background-color: #f0f0f0;
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .cell.X {
-  color: #FF5722;
+  color: var(--x-color);
+  background-color: rgba(255, 84, 112, 0.1);
 }
 
 .cell.O {
-  color: #2196F3;
+  color: var(--o-color);
+  background-color: rgba(77, 61, 247, 0.1);
 }
 
+/* Multiplayer Controls */
 .multiplayer-controls {
   display: flex;
   flex-direction: column;
@@ -101,60 +175,195 @@ button:disabled {
   margin: 20px 0;
   width: 100%;
   max-width: 400px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-.room-input {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.multiplayer-controls h2 {
+  margin-bottom: 20px;
+  color: var(--neutral);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.player-name-input {
   width: 100%;
+  margin-bottom: 15px;
+}
+
+.player-name-input label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.player-name-input input,
+.room-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-family: 'Quicksand', sans-serif;
+  transition: border-color 0.3s;
+}
+
+.player-name-input input:focus,
+.room-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.multiplayer-info {
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+.multiplayer-info h3 {
+  color: var(--primary);
   margin-bottom: 10px;
 }
 
+.multiplayer-info p {
+  margin: 5px 0;
+}
+
+/* Status Messages */
 .status {
-  margin: 20px 0;
+  margin: 10px 0;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
   text-align: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 350px;
 }
 
 .winner {
-  color: #4CAF50;
+  color: var(--winner-color);
   font-size: 24px;
-  margin: 20px 0;
+  font-weight: 700;
   animation: pulse 1.5s infinite;
 }
 
 .draw {
-  color: #FF9800;
+  color: var(--draw-color);
   font-size: 24px;
-  margin: 20px 0;
+  font-weight: 700;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+.status-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  text-align: center;
+  width: 100%;
 }
+
 
 .navbar {
-  background-color: #4CAF50;
+
   color: white;
-  padding: 1rem;
+
+  font-size: 90px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  font-family: 'Honk', system-ui;
 }
 
-.navbar h1 {
-  margin: 0;
-  font-size: 2rem;
-}
 
+
+/* Reset Button */
 .reset-button {
-  background-color: #f44336;
+  background-color: var(--secondary);
+  box-shadow: 0 4px 12px rgba(255, 84, 112, 0.15);
 }
 
 .reset-button:hover {
-  background-color: #d32f2f;
+  background-color: var(--secondary-dark);
+  box-shadow: 0 6px 16px rgba(255, 84, 112, 0.25);
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .board {
+    max-width: 300px;
+    grid-gap: 8px;
+  }
+
+  .cell {
+    font-size: 40px;
+  }
+
+  .game-select button {
+    width: 180px;
+    font-size: 16px;
+  }
+
+  .multiplayer-controls {
+    padding: 20px;
+  }
+
+  .navbar {
+    font-size: 70px;
+  }
+}
+
+@media (max-width: 400px) {
+  .board {
+    max-width: 250px;
+    grid-gap: 6px;
+  }
+
+  .cell {
+    font-size: 32px;
+  }
+
+  .status,
+  .multiplayer-info {
+    max-width: 250px;
+  }
 }
