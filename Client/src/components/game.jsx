@@ -25,7 +25,7 @@ const Game = ({ mode, onResetGame }) => {
         if (mode === 'multiplayer' && !socket) {
             try {
                 // Connect to the server
-                socket = io('http://localhost:3000');
+                socket = io('https://tic-tac-toe-tc03.onrender.com');
                 console.log('Socket connection initialized');
             } catch (error) {
                 console.error('Failed to connect to socket server:', error);
