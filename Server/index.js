@@ -12,17 +12,9 @@ const io = socketIO(server);
 
 
 
-// Serve static files from the React app (client/build folder)
-app.use(express.static(path.join(__dirname, '..', 'Client', 'dist'))); // Adjust path to the `client/build` folder
-
 // Basic route (optional, just to verify the server is working)
-app.get('/', (req, res) => {
+app.get('/status', (req, res) => {
   res.send('Welcome to the Tic Tac Toe Game Server');
-});
-
-// Serve index.html file for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'Client', 'dist', 'index.html')); // Adjust path to the `client/build` folder
 });
 
 
@@ -158,6 +150,25 @@ io.on('connection', (socket) => {
   }
 
 const PORT = process.env.PORT || 3000
+
+
+
+
+
+
+
+app.use(express.static(path.join(__dirname, '..', 'Client', 'dist')));
+
+
+
+const sendIndexHtml = (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'Client', 'dist', 'index.html'))
+}
+
+// Apply the index.html handler to common client-side routes your app might use
+app.get('/', sendIndexHtml)
+app.get('/game', sendIndexHtml)
+
 
 //start the server
 server.listen(PORT, () => {
