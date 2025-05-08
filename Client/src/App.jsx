@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './components/navbar';
 import Game from './components/game';
+import Footer from './components/footer';
 import './App.css';
 
 function App() {
@@ -30,9 +31,16 @@ function App() {
             <button onClick={startMultiplayerGame}>Play With Friend</button>
           </div>
         ) : (
+          <>
           <Game mode={gameMode} onResetGame={resetGame} />
+          
+          </>
         )}
+        <Footer/>
       </div>
+      
+
+
     </>
   );
 }

@@ -327,6 +327,21 @@ button:disabled {
   }
 }
 
+
+
+
+/* footer */
+.footer{
+  
+ 
+  width: 100%;
+  text-align: center;
+}
+
+
+
+
+
 /* Responsive Design */
 @media (max-width: 600px) {
   .board {
@@ -367,3 +382,7 @@ button:disabled {
     max-width: 250px;
   }
 }
+
+
+
+

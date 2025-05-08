@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
 import soundEffects from '../utils/sound';
@@ -5,8 +6,6 @@ import soundEffects from '../utils/sound';
 let socket = null;
 
 const Game = ({ mode, onResetGame }) => {
-
-
     const [roomId, setRoomId] = useState('');
     const [roomInput, setRoomInput] = useState('');
     const [playerName, setPlayerName] = useState('');
@@ -18,6 +17,13 @@ const Game = ({ mode, onResetGame }) => {
     const [winner, setWinner] = useState(null);
     const [waiting, setWaiting] = useState(mode === 'multiplayer');
     const [statusMessage, setStatusMessage] = useState('');
+    const [wantsRematch, setWantsRematch] = useState(false);
+    const [opponentWantsRematch, setOpponentWantsRematch] = useState(false);
+
+    // Server URL configuration
+    const serverUrl = process.env.NODE_ENV === 'production'
+        ? 'https://tic-tac-toe-tc03.onrender.com'
+        : 'http://localhost:3000'; // Default local server port, adjust as needed
 
     // Initialize socket connection for multiplayer mode
     useEffect(() => {
@@ -25,7 +31,11 @@ const Game = ({ mode, onResetGame }) => {
         if (mode === 'multiplayer' && !socket) {
             try {
                 // Connect to the server
-                socket = io('https://tic-tac-toe-tc03.onrender.com');
+                socket = io(serverUrl, {
+                    reconnection: true,
+                    reconnectionAttempts: 5,
+                    reconnectionDelay: 1000
+                });
                 console.log('Socket connection initialized');
             } catch (error) {
                 console.error('Failed to connect to socket server:', error);
@@ -41,7 +51,7 @@ const Game = ({ mode, onResetGame }) => {
                 }
             };
         }
-    }, [mode]);
+    }, [mode, serverUrl]);
 
     // Set up socket event listeners for multiplayer mode
     useEffect(() => {
@@ -82,21 +92,61 @@ const Game = ({ mode, onResetGame }) => {
                     `You won, ${playerName}!` :
                     `${opponentName} won!`);
                 soundEffects.playWin();
+                setWantsRematch(false);
+                setOpponentWantsRematch(false);
             });
 
             socket.on('gameDraw', () => {
                 setGameStatus('draw');
                 setStatusMessage('Game ended in a draw!');
                 soundEffects.playDraw();
+                setWantsRematch(false);
+                setOpponentWantsRematch(false);
             });
 
             socket.on('opponentLeft', () => {
                 setStatusMessage('Your opponent left the game');
                 setGameStatus('over');
+                setWaiting(true);
+                setWantsRematch(false);
+                setOpponentWantsRematch(false);
             });
 
             socket.on('error', (message) => {
                 setStatusMessage(`Error: ${message}`);
+            });
+
+            // New event for rematch request
+            socket.on('rematchRequested', () => {
+                setOpponentWantsRematch(true);
+                setStatusMessage(`${opponentName} wants to play again. Do you?`);
+            });
+
+            // New event for rematch accepted
+            socket.on('rematchAccepted', () => {
+                console.log('Rematch accepted event received');
+                // Reset the game state but keep the room and player info
+                setBoard(Array(9).fill(null));
+                setGameStatus('playing');
+                setWinner(null);
+                setWantsRematch(false);
+                setOpponentWantsRematch(false);
+                setStatusMessage(`New game started! ${currentPlayer === playerSymbol ? 'Your' : `${opponentName}'s`} turn`);
+                soundEffects.playNew();
+            });
+
+            // Add specific handler for rematch confirmation
+            socket.on('rematchConfirmed', (newBoard, firstPlayer) => {
+                console.log('Rematch confirmed event received', firstPlayer);
+                // Reset the game with the new board state
+                setBoard(newBoard);
+                setCurrentPlayer(firstPlayer);
+                setGameStatus('playing');
+                setWinner(null);
+                setWantsRematch(false);
+                setOpponentWantsRematch(false);
+                setStatusMessage(`New game started! ${firstPlayer === playerSymbol ? 'Your' : `${opponentName}'s`} turn`);
+                soundEffects.playNew();
             });
 
             // Store the current socket reference for cleanup
@@ -113,10 +163,12 @@ const Game = ({ mode, onResetGame }) => {
                     currentSocket.off('gameDraw');
                     currentSocket.off('opponentLeft');
                     currentSocket.off('error');
+                    currentSocket.off('rematchRequested');
+                    currentSocket.off('rematchAccepted');
                 }
             };
         }
-    }, [mode, playerSymbol]);
+    }, [mode, playerSymbol, opponentName, playerName, currentPlayer]);
 
     // Check for winner in solo mode
     const checkWinner = useCallback((boardState) => {
@@ -292,18 +344,87 @@ const Game = ({ mode, onResetGame }) => {
         }
     };
 
-    // Reset the game
+    // Reset or request rematch
     const resetGame = () => {
         if (mode === 'solo') {
             setBoard(Array(9).fill(null));
             setCurrentPlayer('X');
             setGameStatus('playing');
             setWinner(null);
-        } else {
-            // For multiplayer, just go back to main menu
+        } else if (mode === 'multiplayer') {
+            // Notify server that player is leaving the room
+            if (socket && roomId) {
+                socket.emit('leaveRoom', roomId);
+            }
+
+            // Reset all game state
+            setRoomId('');
+            setWaiting(true);
+            setGameStatus('playing');
+            setWinner(null);
+            setPlayerSymbol(null);
+            setOpponentName('');
+            setWantsRematch(false);
+            setOpponentWantsRematch(false);
+            setStatusMessage('');
+
+            // Return to main menu
             if (onResetGame) onResetGame();
         }
     };
+
+    // New function to handle rematch request
+    const requestRematch = () => {
+        if (socket && roomId) {
+            // Mark this player as wanting a rematch
+            setWantsRematch(true);
+            setStatusMessage("Waiting for opponent's response...");
+
+            // Emit the rematch request
+            socket.emit('requestRematch', roomId);
+
+            // If opponent already requested rematch, initiate new game
+            if (opponentWantsRematch) {
+                console.log("Both players want rematch, accepting");
+                socket.emit('acceptRematch', roomId);
+
+                // Reset the game state but keep the room and player info
+                setBoard(Array(9).fill(null));
+                setGameStatus('playing');
+                setWinner(null);
+                setWantsRematch(false);
+                setOpponentWantsRematch(false);
+                setStatusMessage(`New game started!`);
+                soundEffects.playNew();
+            }
+        }
+    };
+
+    // Effect to handle when both players want a rematch
+    useEffect(() => {
+        if (wantsRematch && opponentWantsRematch && socket && roomId) {
+            console.log("Effect triggered: Both players want rematch");
+            // Both players have agreed to a rematch
+            socket.emit('acceptRematch', roomId);
+
+            // Reset game state here too to ensure UI updates properly
+            setBoard(Array(9).fill(null));
+            setGameStatus('playing');
+            setWinner(null);
+            setWantsRematch(false);
+            setOpponentWantsRematch(false);
+            setStatusMessage(`New game started!`);
+            soundEffects.playNew();
+        }
+    }, [wantsRematch, opponentWantsRematch, socket, roomId]);
+
+    // Reset rematch state when the component unmounts or mode changes
+    useEffect(() => {
+        return () => {
+            setWantsRematch(false);
+            setOpponentWantsRematch(false);
+        };
+    }, [mode]);
 
     return (
         <div className="game">
@@ -376,6 +497,17 @@ const Game = ({ mode, onResetGame }) => {
                             </button>
                         ))}
                     </div>
+
+                    {/* Show rematch button in multiplayer when game is over */}
+                    {mode === 'multiplayer' && (gameStatus === 'won' || gameStatus === 'draw') && (
+                        <button
+                            className="rematch-button"
+                            onClick={requestRematch}
+                            disabled={wantsRematch}
+                        >
+                            {wantsRematch ? 'Waiting for opponent...' : 'Play Again'}
+                        </button>
+                    )}
 
                     <button
                         className="reset-button"
